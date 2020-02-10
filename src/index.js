@@ -7,12 +7,14 @@ const app = express();
 
 app.get('/', (req, res, next) => {
 
-    sequelize.authentificate().then(() => {
-        res.send('Ok')
-    }).catch(() => {
+    sequelize
+        .authenticate()
+        .then(() => {
+            res.send('Ok')
+        }).catch(() => {
         res.status(404).send('Not ok')
     })
 });
 
 app.listen(PORT,
-    ()=>console.log(`Server app started on port${PORT}`));
+    () => console.log(`Server app started on port${PORT}`));
