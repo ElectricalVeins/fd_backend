@@ -5,6 +5,7 @@ const express = require('express');
 const PORT = process.env.NODE_ENV || 3000;
 
 const app = express();
+app.use(express.json());
 
 app.get('/', (req, res, next) => {
 
@@ -17,24 +18,27 @@ app.get('/', (req, res, next) => {
     })
 });
 
-app.post('/', async (req, res, next) => {
+app.post('/user', async (req, res, next) => {
     try {
-        const createdUser = await User.create(req.userData);
+         req.body.passwordHash=req.body.password;
+
+        const createdUser = await User.create(req.body);
 
         if (createdUser) {
             const data = createdUser.get();
             delete data.password;
+            delete data.passwordHash;
             return res.status(201).send(data);
         }
-        next(new AppErrors.BadRequestError());
+        next();
     } catch (e) {
         next(e);
     }
 });
 
-app.patch('/:userId', async (req, res, next) => {
+app.patch('/user/:userId', async (req, res, next) => {
     try {
-        const [updatedRowsCount, updatedRows] = await User.update(req.userData, {
+        const [updatedRowsCount, updatedRows] = await User.update(req.body, {
             where: {
                 id: req.params.userId
             },
@@ -43,34 +47,35 @@ app.patch('/:userId', async (req, res, next) => {
 
         if (updatedRowsCount) {
             const data = updatedRows[0].get();
+            delete data.passwordHash;
             delete data.password;
             return res.send(data);
         }
-        next(new AppErrors.NotFoundError('User'));
+        next();
     } catch (e) {
         next(e);
     }
 });
 
-app.get('/', async (req, res, next) => {
+app.get('/user/:userId', async (req, res, next) => {
     try {
 
         const foundUser = await User.findByPk(req.params.userId, {
             attributes: {
-                exclude: ['password']
+                exclude: ['passwordHash','updatedAt']
             }
         });
 
         if (foundUser) {
             return res.send(foundUser);
         }
-        next(new AppErrors.NotFoundError('User'));
+        next();
     } catch (e) {
         next(e);
     }
 });
 
-app.delete('/:userId', async (req, res, next) => {
+app.delete('/user/:userId', async (req, res, next) => {
     try {
         const deletedRowCount = await User.destroy({
             where: {
@@ -80,7 +85,7 @@ app.delete('/:userId', async (req, res, next) => {
         if (deletedRowCount) {
             return res.send(`${deletedRowCount}`);
         }
-        next(new AppErrors.NotFoundError('User'));
+        next();
     } catch (e) {
         next(e);
     }

@@ -2,13 +2,13 @@
 
 function generateUsers () {
   const users = [];
-  for (let i = 0; i < 50;) {
+  for (let i = 1; i <= 50;) {
     users.push( new Object( {
-      firstName: 'Test',
-      lastName: 'Testovich',
-      login: `test_login${++i}`,
+      firstName: `Name${i}`,
+      lastName: `Surname${i}`,
       email: `test${i}@gmail.com`,
-      passwordHash: bcrypt.hashSync( `password${i}`, bcrypt.genSaltSync( 8 ) ),
+      passwordHash: `${i}passwordHash${i}`,
+      profilePicture: `test_profilePicture${++i}`,
       createdAt: new Date(),
       updatedAt: new Date(),
     } ) )
@@ -24,12 +24,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('People', null, {});
-    */
+    return queryInterface.bulkDelete('Users',null,{})
   }
 };
