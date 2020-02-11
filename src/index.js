@@ -1,70 +1,26 @@
-const { User } = require('./db/models');
 const express = require('express');
+const { createUser, getUserById, updateUserById, deleteUserById } = require(
+  './controllers/user.controller.js');
 
 const PORT = process.env.NODE_ENV || 3000;
 
 const app = express();
 app.use(express.json());
 
-app.listen(PORT,
-           () => console.log(`Server app started on port${PORT}`));
+
 
 //============================//
 
-app.post('/user', async (req, res, next) => {
-  const data = await User.create(req.body);
-  if (data) {
-    data.password = undefined;
-    res.send(data);
-  }
-});
+app.post('/user', createUser);
 
-app.patch('/user/:userId', async (req, res, next) => {
-  const updatedData = await User.update(req.body, {
-    where: {
-      id: req.params.userId
-    },
-    returning:true,
-  });
+app.patch('/user/:userId', getUserById);
 
-  if(updatedData){
-    updatedData.password = undefined;
-    res.send(updatedData);
-  }
-});
+app.get('/user/:userId', updateUserById);
 
-app.get('/user/:userId',async(req,res,next)=>{
-  const data = await User.findByPk(req.params.userId,{
-    exclude:['passwordHash','updatedAt'],
-  });
-  if(data){
-    res.send(data);
-  }
-});
+app.delete('/user/:userId', deleteUserById);
 
-app.delete('/user/:userId',async(req,res,next)=>{
-  const result = await User.destroy({
-                                      where:{
-                                        id:req.params.userId
-                                      }
-  });
-  if(result){
-    res.send(result);
-  }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.listen(PORT,
+           () => console.log(`Server app started on port${PORT}`));
 /*
 app.post('/user', async (req, res, next) => {
   try {
