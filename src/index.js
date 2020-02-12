@@ -1,6 +1,5 @@
 const express = require('express');
-const UserController = require(
-  './controllers/user.controller.js');
+const {UserController, TaskController}=require('./controllers')
 
 const PORT = process.env.NODE_ENV || 3000;
 
@@ -12,12 +11,17 @@ app.use(express.json());
 //============================//
 
 app.post('/user', UserController.createUser);
-
 app.patch('/user/:userId', UserController.updateUserById);
-
 app.get('/user/:userId', UserController.getUserById);
-
 app.delete('/user/:userId', UserController.deleteUserById);
+
+app.post('/task', TaskController.createTask);
+app.patch('/task/:taskId', TaskController.updateTaskById);
+app.get('/task/:taskId', TaskController.getTaskById);
+app.delete('/task/:taskId', TaskController.deleteTaskById);
+
+
+
 
 app.listen(PORT,
            () => console.log(`Server app started on port${PORT}`));
