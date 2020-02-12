@@ -2,18 +2,25 @@
 const { NAME_PATTERN,SALT_ROUND } = require('../../constants');
 const bcrypt = require('bcrypt');
 
-const nameAttribute = {
-  type: DataTypes.STRING,
-  allowNull: false,
-  validate: {
-    is: NAME_PATTERN
-  }
-};
+
 
 module.exports = (sequelize, DataTypes) => {
+
   const User = sequelize.define('User', {
-    firstName: nameAttribute,
-    lastName: nameAttribute,
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is: NAME_PATTERN
+      }
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        is: NAME_PATTERN
+      }
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
