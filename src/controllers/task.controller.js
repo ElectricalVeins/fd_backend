@@ -4,38 +4,53 @@ class TaskController {
   constructor () {}
 
   async createTask (req, res, next) {
-    req.body.userId=req.headers.authorization;
+    try {
+      req.body.userId=req.headers.authorization;
 
-    const data = await Task.create({...req.body});
+      const data = await Task.create(req.body,{
+        returning:true
+      });
 
-    res.send(data);
+      res.send(data);
+
+    }catch (e) {
+
+    }
   }
 
   async updateTaskById (req, res, next) {
+    try {
 
-    const [updatedDataCount, updatedData] = await Task.update(req.body, {
-      where: {
-        id: req.params.taskId
-      },
-      returning: true,
-    });
+      const [updatedDataCount, updatedData] = await Task.update(req.body, {
+        where: {
+          id: req.params.taskId
+        },
+        returning: true,
+      });
 
-    if (updatedDataCount) {
-      const deleteResult = updatedData[0].get();
-      return res.send(deleteResult);
+      if (updatedDataCount) {
+        const deleteResult = updatedData[0].get();
+        return res.send(deleteResult);
+      }
+    }catch (e) {
+
     }
 
   }
 
   async getTaskById (req, res, next) {
+    try {
+      const data = await Task.findByPk(req.params.taskId);
 
-    const data = await Task.findByPk(req.params.taskId);
+      if (data) {
+        return res.send(data);
+      } else{
+        return res.status(500);
+      }
+    }catch (e) {
 
-    if (data) {
-      return res.send(data);
-    } else{
-      return res.status(500);
     }
+
 
   }
 
