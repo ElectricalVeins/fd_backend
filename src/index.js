@@ -1,5 +1,6 @@
 const express = require('express');
 const { UserController, TaskController } = require('./controllers');
+const {addUserIdToBody}= require('./middlewares');
 
 const PORT = process.env.NODE_ENV || 3000;
 
@@ -13,7 +14,7 @@ app.patch('/user/:userId', UserController.updateUserById);
 app.get('/user/:userId', UserController.getUserById);
 app.delete('/user/:userId', UserController.deleteUserById);
 
-app.post('/task', TaskController.createTask);
+app.post('/task',addUserIdToBody, TaskController.createTask);
 app.patch('/task/:taskId', TaskController.updateTaskById);
 app.get('/task/:taskId', TaskController.getTaskById);
 app.delete('/task/:taskId', TaskController.deleteTaskById);

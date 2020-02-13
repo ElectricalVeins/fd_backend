@@ -1,21 +1,5 @@
 const { User } = require('../db/models');
 
-/*const createUser = async (req, res, next) => {
-
-};
-
-const updateUserById = async (req, res, next) => {
-
-};
-
-const getUserById = async (req, res, next) => {
-
-};
-
-const deleteUserById = async (req, res, next) => {
-
-};*/
-
 class UserController {
   constructor () {}
 
@@ -63,6 +47,8 @@ class UserController {
       });
       if (data) {
         return res.send(data);
+      }else{
+        return res.status(500);
       }
 
     } catch (e) {
