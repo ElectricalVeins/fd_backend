@@ -9,11 +9,18 @@ module.exports = async (req, res, next) => {
                                         email: req.body.email
                                       }
                                     });
+    if(user){
+      if (await bcrypt.compare(req.body.password, user.password)) {
+        req.user = user;
+        const userData = user.get();
+        delete userData.password;
 
-    if (await bcrypt.compare(req.body.password, user.password)) {
-      return next();
+        return req.send(user)
+      }
+      return res.status(403).send('Incorrect password ');
     }
-    res.status(403).send('Incorrect password ');
+
+    res.status(404)
   } catch (e) {
 
   }

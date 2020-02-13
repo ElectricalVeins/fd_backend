@@ -1,6 +1,6 @@
 const express = require('express');
 const { UserController, TaskController } = require('./controllers');
-const {addUserIdToBody}= require('./middlewares');
+const {addUserIdToBody, comparePassword}= require('./middlewares');
 
 const PORT = process.env.NODE_ENV || 3000;
 
@@ -11,6 +11,8 @@ app.use(express.json());
 
 
 //============================//
+
+app.post('/login',  );
 
 app.post('/user', UserController.createUser);
 app.patch('/user/:userId', UserController.updateUserById);

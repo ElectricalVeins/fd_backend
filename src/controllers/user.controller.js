@@ -30,6 +30,19 @@ class UserController {
     }
 
   };
+/*
+  getUserByEmail=async(req,res,next)=>{
+
+    try{
+
+
+
+    }catch (e) {
+
+    }
+
+  };*/
+
   readUserById = async (req, res, next) => {
     try {
       res.send(await this._controller.read(req.params.id, {

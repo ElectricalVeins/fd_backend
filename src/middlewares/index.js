@@ -1,3 +1,5 @@
+const comparePassword= require('./user/comparePassword.js');
+
 async function addUserIdToBody (req, res, next) {
 
   try {
@@ -12,5 +14,6 @@ async function addUserIdToBody (req, res, next) {
 }
 
 module.exports = {
-  addUserIdToBody
+  addUserIdToBody,
+  comparePassword
 };
