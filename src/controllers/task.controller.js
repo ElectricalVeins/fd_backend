@@ -1,69 +1,53 @@
 const { Task } = require('../db/models');
+const Controller = require('../utils/controller');
 
 class TaskController {
-  constructor () {}
-
-  async createTask (req, res, next) {
-    try {
-      req.body.userId=req.headers.authorization;
-
-      const data = await Task.create(req.body,{
-        returning:true
-      });
-
-      res.send(data);
-
-    }catch (e) {
-
-    }
+  constructor () {
+    this._controller = new Controller(Task);
   }
 
-  async updateTaskById (req, res, next) {
+  createTask = async (req, res, next) => {
+    try {
+      req.body.userId = req.headers.authorization;
+      const newTask = await this._controller.create(req.body);
+      return res.send(newTask);
+
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  readTaskById = async (req, res, next) => {
     try {
 
-      const [updatedDataCount, updatedData] = await Task.update(req.body, {
-        where: {
-          id: req.params.taskId
-        },
-        returning: true,
-      });
+      const task = await this._controller.read(req.params.id);
 
-      if (updatedDataCount) {
-        const deleteResult = updatedData[0].get();
-        return res.send(deleteResult);
-      }
-    }catch (e) {
-
+      return res.send(task);
+    } catch (e) {
+      next(e);
     }
+  };
 
-  }
-
-  async getTaskById (req, res, next) {
+  updateTaskById = async (req, res, next) => {
     try {
-      const data = await Task.findByPk(req.params.taskId);
+      const updatedTask = await this._controller.update(req.params.id);
 
-      if (data) {
-        return res.send(data);
-      } else{
-        return res.status(500);
-      }
-    }catch (e) {
+      return res.send(updatedTask);
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  deleteTaskById = async (req, res, next) => {
+    try {
+      const deletedTask = await this._controller.delete(req.params.id);
+
+      return res.send(deletedTask);
+    } catch (e) {
 
     }
+  };
 
-
-  }
-
-  async deleteTaskById (req, res, next) {
-    const result = await Task.destroy({
-                                        where: {
-                                          id: req.params.taskId
-                                        }
-                                      });
-    if (result) {
-      return res.send(`${result}`);
-    }
-  }
 }
 
 module.exports = new TaskController();
