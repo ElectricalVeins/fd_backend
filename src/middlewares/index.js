@@ -2,12 +2,12 @@ async function addUserIdToBody (req, res, next) {
 
   try {
     if (req.body.userId) {
-      req.body.userId = req.headers.authorization;
+      return
     } else {
       next();
     }
   } catch (e) {
-
+    next(e);
   }
 }
 

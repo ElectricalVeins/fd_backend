@@ -1,76 +1,54 @@
 const { User } = require('../db/models');
+const Controller = require('../utils/controller');
 
 class UserController {
-  constructor () {}
-
-  async createUser (req, res, next) {
-    try {
-      const data = await User.create(req.body);
-
-      if (data) {
-        req.body.password = undefined;
-        return res.send(req.body);
-      }
-
-    } catch (e) {
-
-    }
+  constructor () {
+    this._controller = new Controller(User);
   }
 
-  async updateUserById (req, res, next) {
+  createUser = async (req, res, next) => {
     try {
-      const [updatedDataCount, updatedData] = await User.update(req.body, {
-        where: {
-          id: req.params.userId
-        },
-        returning: true,
-      });
-      if (updatedDataCount) {
-        const deleteResult = updatedData[0].get();
-
-        deleteResult.password = undefined;
-
-        return res.send(deleteResult);
-      }
+      const newUser = await this._controller.create(req.body);
+      const userData = newUser.get();
+      delete userData.password;
+      res.send(userData);
 
     } catch (e) {
-
+      next(e);
     }
-  }
-
-  async getUserById (req, res, next) {
+  };
+  updateUserById = async (req, res, next) => {
     try {
-      const data = await User.findByPk(req.params.userId, {
+      const updatedUser = await this._controller.update(req.params.id,
+                                                        req.body);
+      const data = updatedUser.get();
+      delete data.password;
+
+      return res.send(data);
+    } catch (e) {
+      next(e);
+    }
+
+  };
+  readUserById = async (req, res, next) => {
+    try {
+      res.send(await this._controller.read(req.params.id, {
         attributes: {
-          exclude: ['passwordHash', 'updatedAt'],
-        },
-      });
-      if (data) {
-        return res.send(data);
-      }else{
-        return res.status(500);
-      }
-
+          exclude: ['password'],
+        }
+      }));
     } catch (e) {
-
+      next(e);
     }
-  }
-
-  async deleteUserById (req, res, next) {
+  };
+  deleteUserById = async (req, res, next) => {
     try {
-      const result = await User.destroy({
-                                          where: {
-                                            id: req.params.userId
-                                          }
-                                        });
-      if (result) {
-        return res.send(`${result}`);
-      }
-
+      res.send(`${await this._controller.delete(req.params.id)}`);
     } catch (e) {
-
+      next(e);
     }
-  }
+  };
+
 }
 
 module.exports = new UserController();
