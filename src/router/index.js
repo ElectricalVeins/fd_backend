@@ -5,6 +5,10 @@ const taskRouter = require('./task.route.js');
 
 const router = express.Router();
 
+/*router.route( '/authorization' )
+ .post( '/login', findUserByEmail, comparePassword, )
+ .post( '/signup', );*/
+
 router.use(checkAuthorization);
 router.use(userRouter);
 router.use(taskRouter);
