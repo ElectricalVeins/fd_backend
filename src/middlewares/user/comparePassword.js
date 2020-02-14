@@ -1,27 +1,12 @@
-const bcrypt = require('bcrypt');
-const { User } = require('../../db/models');
+const bcrypt = require( 'bcrypt' );
 
 module.exports = async (req, res, next) => {
   try {
-
-    const user = await User.findOne({
-                                      where: {
-                                        email: req.body.email
-                                      }
-                                    });
-    if(user){
-      if (await bcrypt.compare(req.body.password, user.password)) {
-        req.user = user;
-        const userData = user.get();
-        delete userData.password;
-
-        return req.send(user)
-      }
-      return res.status(403).send('Incorrect password ');
+    if (await bcrypt.compare( req.body.password, req.user.password )) {
+      return next();
     }
-
-    res.status(404)
+    return res.status( 403 ).send( 'Password invalid' );
   } catch (e) {
-
+    next( e );
   }
 };
