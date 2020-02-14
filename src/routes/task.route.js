@@ -5,6 +5,7 @@ const { addTaskIdToBody, comparePassword } = require('../middlewares');
 const taskRouter = express.Router();
 
 taskRouter.post('', TaskController.createTask);
+
 taskRouter.patch('/:taskId', TaskController.updateTaskById);
 taskRouter.get('/:taskId', TaskController.readTaskById);
 taskRouter.delete('/:taskId', TaskController.deleteTaskById);
