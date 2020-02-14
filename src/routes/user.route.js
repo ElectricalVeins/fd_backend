@@ -1,13 +1,14 @@
-const express = require('express');
-const { UserController } = require('../controllers');
-const { addUserIdToBody, comparePassword } = require('../middlewares');
+const express = require( 'express' );
+const { UserController } = require( '../controllers' );
+const { extractUserId } = require( './../middlewares/user' );
 
 const userRouter = express.Router();
 
-userRouter.post('', UserController.createUser);
-
-userRouter.patch('/:userId', UserController.updateUserById);
-userRouter.get('/:userId', UserController.readUserById);
-userRouter.delete('/:userId', UserController.deleteUserById);
+userRouter.route( '/(:id)?' )
+           .post( UserController.createUser )
+           .all( extractUserId )
+           .get( UserController.getUserById )
+           .patch( UserController.updateUserById )
+           .delete( UserController.deleteUserById );
 
 module.exports = userRouter;
