@@ -4,7 +4,7 @@ const { TaskController } = require( '../controllers' );
 
 const taskRouter = express.Router();
 
-taskRouter.route( '/(:id)?' )
+taskRouter.route( '/user(/:id)?' )
            .post( TaskController.createTask )
 
            .get( TaskController.getTaskById )

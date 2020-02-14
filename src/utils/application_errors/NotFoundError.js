@@ -1,4 +1,4 @@
-import ApplicationError from './ApplicationError.js';
+const ApplicationError =require('./ApplicationError.js');
 
 class NotFoundError extends ApplicationError {
   constructor (resourceName) {
@@ -10,4 +10,4 @@ class NotFoundError extends ApplicationError {
   }
 }
 
-export default NotFoundError;
+module.exports= NotFoundError;

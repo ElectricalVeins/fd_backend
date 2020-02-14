@@ -1,4 +1,4 @@
-import ApplicationError from './ApplicationError.js';
+const ApplicationError =require('./ApplicationError.js');
 
 class UnauthorizedError extends ApplicationError {
   constructor () {
@@ -6,4 +6,4 @@ class UnauthorizedError extends ApplicationError {
   }
 }
 
-export default UnauthorizedError;
+module.exports= UnauthorizedError;

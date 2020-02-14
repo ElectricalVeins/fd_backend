@@ -1,6 +1,6 @@
-import ApplicationError from './ApplicationError.js';
+const ApplicationError =require ('./ApplicationError.js');
 
-export default class MethodNotAllowedError extends ApplicationError {
+module.exports= class MethodNotAllowedError extends ApplicationError {
   constructor (method = '') {
     super( `The${method
                  ? ' ' + method

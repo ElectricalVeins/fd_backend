@@ -1,4 +1,4 @@
-import ApplicationError from './ApplicationError.js';
+const ApplicationError =require ('./ApplicationError.js');
 
 class ConflictError extends ApplicationError {
   constructor (resourceName) {
@@ -7,4 +7,4 @@ class ConflictError extends ApplicationError {
   }
 }
 
-export default ConflictError;
+module.exports= ConflictError;
