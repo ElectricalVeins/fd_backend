@@ -1,6 +1,4 @@
-const sequelizeErrorHandler = require(
-  'src/middlewares/error_handlers/sequelizeErrorHandler.js');
+//const sequelizeErrorHandler = require(
+//  'src/middlewares/error_handlers/sequelizeErrorHandler.js');
 
-module.exports = {
-  sequelizeErrorHandler
-};
+//module.exports = {sequelizeErrorHandler};

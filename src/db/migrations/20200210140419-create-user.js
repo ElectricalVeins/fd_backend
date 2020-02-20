@@ -27,9 +27,8 @@ module.exports = {
                 type: Sequelize.TEXT
             },
             profilePicture: {
-                type: Sequelize.STRING,
-                allowNull:true,
-                unique:true
+                type: Sequelize.TEXT,
+                allowNull:true
             },
             createdAt: {
                 allowNull: false,
