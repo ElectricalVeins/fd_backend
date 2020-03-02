@@ -10,4 +10,7 @@ taskRouter.route( '/task(/:id)?' )
            .patch( TaskController.updateTaskById )
            .delete( TaskController.deleteTaskById );
 
+taskRouter.route('/tasks')
+    .get(TaskController.getUserTasks);
+
 module.exports = taskRouter;

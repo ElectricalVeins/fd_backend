@@ -14,7 +14,7 @@ router.use('/admin',adminRouter);
  .post( '/signup', );*/
 
 //OTHER
-//router.use(checkAuthorization);
+router.use(checkAuthorization);
 router.use(userRouter);
 router.use(taskRouter);
 
